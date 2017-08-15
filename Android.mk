@@ -26,6 +26,18 @@ include $(call all-makefiles-under,$(LOCAL_PATH))
 
 include $(CLEAR_VARS)
 
+FIRMWARE_VENUS_IMAGES := \
+    venus.b00 venus.b01 venus.b02 venus.b03 venus.b04 venus.mdt
+
+FIRMWARE_VENUS_SYMLINKS := $(addprefix $(TARGET_OUT_ETC)/firmware/,$(notdir $(FIRMWARE_VENUS_IMAGES)))
+$(FIRMWARE_VENUS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
+	@echo "Venus Firmware link: $@"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf /firmware/image/$(notdir $@) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(FIRMWARE_VENUS_SYMLINKS)
+
 FIRMWARE_WCD9320_IMAGES := \
     wcd9320_anc.bin wcd9320_mbhc.bin
 
